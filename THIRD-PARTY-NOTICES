@@ -1,0 +1,17 @@
+﻿﻿This library uses third-party libraries or other resources that may be distributed under licenses different than this library.
+
+The attached notices are provided for information only.
+
+1. ScriptableObject-Architecture (https://github.com/DanielEverland/ScriptableObject-Architecture)
+
+https://github.com/DanielEverland/ScriptableObject-Architecture/blob/master/LICENSE
+
+2. SOA Common (https://github.com/ljardim/brix-scriptableobject-architecture-common)
+
+https://github.com/ljardim/brix-scriptableobject-architecture-common/blob/master/LICENCE
+
+3. Behaviour-Editor (https://github.com/sharpaccent/Behavior-Editor)
+
+Licence: CC-BY-4.0
+https://creativecommons.org/licenses/by/4.0/
+Changes Made: StateAction is replaced by a ScriptableObject Action which takes no Inputs so as to make it more extendable

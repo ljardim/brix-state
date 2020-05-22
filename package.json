@@ -1,0 +1,15 @@
+{
+    "name": "com.brix.state",
+    "displayName": "Brix State",
+    "description": "Simple state pattern implementation based on work done by Athos Kele (www.sharpaccent.com)",
+    "version": "1.0.0",
+    "unity": "2019.3",
+    "dependencies": {
+        "com.brix.soa.common": "https://github.com/ljardim/brix-scriptableobject-architecture-common.git#1.0.0"
+    },
+    "keywords": [
+        "state",
+        "architecture"
+    ],
+    "category": "Tools"
+}
