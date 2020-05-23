@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Brix.State.Editor {
-    [CreateAssetMenu(menuName = Constants.Menus.STATE + "Settings")]
+    [CreateAssetMenu(menuName = Constants.Menus.STATE + "New Editor Settings")]
     public class EditorSettings : ScriptableObject {
         public StateGraph currentGraph;
 
@@ -24,7 +24,7 @@ namespace Brix.State.Editor {
             Vector3 pos,
             int transitionFromNodeIndex = 0,
             int transitionRefId = 0) {
-            Node node = new Node {
+            var node = new Node {
                 id = currentGraph.idCount,
                 drawNode = type,
                 windowRect = {

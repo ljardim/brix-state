@@ -22,7 +22,7 @@ namespace Brix.State.Editor {
             inputNode.previousCollapse = inputNode.collapse;
 
             if (inputNode.stateRef.previousState != inputNode.stateRef.currentState) {
-                inputNode.isDuplicate = BrixEditor.settings.currentGraph.IsStateDuplicate(inputNode);
+                inputNode.isDuplicate = BrixEditor.Settings.currentGraph.IsStateDuplicate(inputNode);
                 inputNode.stateRef.previousState = inputNode.stateRef.currentState;
 
                 if (!inputNode.isDuplicate) {
@@ -38,7 +38,7 @@ namespace Brix.State.Editor {
                             inputNode.stateRef.currentState.transitions[i], inputNode, pos);
                     }
 
-                    BrixEditor.forceSetDirty = true;
+                    BrixEditor.ForceSetDirty = true;
                 }
             }
 

@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Brix.State.Editor {
     public class BrixEditor : EditorWindow {
         private void Update() {
-            if (settings.currentGraph != null) {
-                var nodesWereDeleted = settings.currentGraph.DeleteNodesMarkedForDelete();
+            if (Settings.currentGraph != null) {
+                var nodesWereDeleted = Settings.currentGraph.DeleteNodesMarkedForDelete();
                 if (nodesWereDeleted) {
                     Repaint();
                 }
@@ -39,8 +39,8 @@ namespace Brix.State.Editor {
 
         #region Variables
 
-        public static EditorSettings settings;
-        public static bool forceSetDirty;
+        public static EditorSettings Settings;
+        public static bool ForceSetDirty;
 
         private static StateManager _currentStateManager;
         private Vector3 _mousePosition;
@@ -82,8 +82,8 @@ namespace Brix.State.Editor {
         }
 
         private void OnEnable() {
-            settings = Resources.Load("EditorSettings") as EditorSettings;
-            if (settings == null) {
+            Settings = Resources.Load("EditorSettings") as EditorSettings;
+            if (Settings == null) {
                 Debug.Log("Editor settings was not found. Creating default ones in Brix/Resources");
                 
                 AssetDatabase.CreateFolder("Assets", "Brix");
@@ -111,20 +111,20 @@ namespace Brix.State.Editor {
                 var defaultGraph = CreateInstance<StateGraph>();
                 AssetDatabase.CreateAsset(defaultGraph, "Assets/Brix/Resources/DefaultGraph.asset");
                 
-                settings = CreateInstance<EditorSettings>();
-                settings.skin = editorSkin;
-                settings.activeSkin = activeStateSkin;
-                settings.commentNode = commentNode;
-                settings.portalNode = portalNode;
-                settings.transitionNode = transitionNode;
-                settings.stateNode = stateNode;
-                settings.currentGraph = defaultGraph;
-                AssetDatabase.CreateAsset(settings, "Assets/Brix/Resources/EditorSettings.asset");
+                Settings = CreateInstance<EditorSettings>();
+                Settings.skin = editorSkin;
+                Settings.activeSkin = activeStateSkin;
+                Settings.commentNode = commentNode;
+                Settings.portalNode = portalNode;
+                Settings.transitionNode = transitionNode;
+                Settings.stateNode = stateNode;
+                Settings.currentGraph = defaultGraph;
+                AssetDatabase.CreateAsset(Settings, "Assets/Brix/Resources/EditorSettings.asset");
             }
 
-            settings = Resources.Load("EditorSettings") as EditorSettings;
-            _style = settings.skin.GetStyle("window");
-            _activeStyle = settings.activeSkin.GetStyle("window");
+            Settings = Resources.Load("EditorSettings") as EditorSettings;
+            _style = Settings.skin.GetStyle("window");
+            _activeStyle = Settings.activeSkin.GetStyle("window");
         }
 
         #endregion
@@ -146,7 +146,7 @@ namespace Brix.State.Editor {
 
             DrawNodes();
 
-            if (settings.currentGraph == null) {
+            if (Settings.currentGraph == null) {
                 return;
             }
 
@@ -154,23 +154,23 @@ namespace Brix.State.Editor {
                 Repaint();
             }
 
-            if (settings.makeTransition) {
+            if (Settings.makeTransition) {
                 _mouseRect.x = _mousePosition.x;
                 _mouseRect.y = _mousePosition.y;
-                var fromNode = settings.currentGraph.GetNodeById(_transitionFromNodeId).windowRect;
+                var fromNode = Settings.currentGraph.GetNodeById(_transitionFromNodeId).windowRect;
                 DrawNodeCurve(fromNode, _mouseRect, true, Color.blue);
                 Repaint();
             }
 
-            if (!forceSetDirty) {
+            if (!ForceSetDirty) {
                 return;
             }
 
-            forceSetDirty = false;
-            EditorUtility.SetDirty(settings);
-            EditorUtility.SetDirty(settings.currentGraph);
+            ForceSetDirty = false;
+            EditorUtility.SetDirty(Settings);
+            EditorUtility.SetDirty(Settings.currentGraph);
 
-            foreach (var node in settings.currentGraph.nodes) {
+            foreach (var node in Settings.currentGraph.nodes) {
                 if (node.stateRef.currentState != null) {
                     EditorUtility.SetDirty(node.stateRef.currentState);
                 }
@@ -183,16 +183,16 @@ namespace Brix.State.Editor {
 
             EditorGUILayout.LabelField(" ", GUILayout.Width(100));
             EditorGUILayout.LabelField("Assign Graph:", GUILayout.Width(100));
-            settings.currentGraph = (StateGraph) EditorGUILayout.ObjectField(settings.currentGraph, typeof(StateGraph),
+            Settings.currentGraph = (StateGraph) EditorGUILayout.ObjectField(Settings.currentGraph, typeof(StateGraph),
                 false, GUILayout.Width(200));
 
-            if (settings.currentGraph != null) {
-                foreach (var node in settings.currentGraph.nodes) {
+            if (Settings.currentGraph != null) {
+                foreach (var node in Settings.currentGraph.nodes) {
                     node.DrawCurve();
                 }
 
-                for (var i = 0; i < settings.currentGraph.nodes.Count; i++) {
-                    var node = settings.currentGraph.nodes[i];
+                for (var i = 0; i < Settings.currentGraph.nodes.Count; i++) {
+                    var node = Settings.currentGraph.nodes[i];
 
                     if (node.drawNode is StateNode) {
                         if (_currentStateManager != null &&
@@ -213,23 +213,23 @@ namespace Brix.State.Editor {
         }
 
         private static void DrawNodeWindow(int id) {
-            settings.currentGraph.nodes[id].DrawWindow();
+            Settings.currentGraph.nodes[id].DrawWindow();
             GUI.DragWindow();
         }
 
         private void HandleUserInput(Event inputEvent) {
-            if (settings.currentGraph == null) {
+            if (Settings.currentGraph == null) {
                 return;
             }
 
-            if (settings.makeTransition) {
+            if (Settings.makeTransition) {
                 if (inputEvent.button == MOUSE_BUTTON_LEFT && inputEvent.type == EventType.MouseDown) {
                     MakeTransition();
                 }
             } else {
                 if (inputEvent.button == MOUSE_BUTTON_RIGHT && inputEvent.type == EventType.MouseDown) {
                     _clickedOnWindow = false;
-                    foreach (var node in settings.currentGraph.nodes) {
+                    foreach (var node in Settings.currentGraph.nodes) {
                         if (!node.windowRect.Contains(inputEvent.mousePosition)) {
                             continue;
                         }
@@ -267,14 +267,14 @@ namespace Brix.State.Editor {
             _scrollStartPos = inputEvent.mousePosition;
             _scrollPos += diff;
 
-            foreach (var node in settings.currentGraph.nodes) {
+            foreach (var node in Settings.currentGraph.nodes) {
                 node.windowRect.x += diff.x;
                 node.windowRect.y += diff.y;
             }
         }
 
         private void ResetScroll() {
-            foreach (var node in settings.currentGraph.nodes) {
+            foreach (var node in Settings.currentGraph.nodes) {
                 node.windowRect.x -= _scrollPos.x;
                 node.windowRect.y -= _scrollPos.y;
             }
@@ -283,9 +283,9 @@ namespace Brix.State.Editor {
         }
 
         private void MakeTransition() {
-            settings.makeTransition = false;
+            Settings.makeTransition = false;
             _clickedOnWindow = false;
-            foreach (var node in settings.currentGraph.nodes) {
+            foreach (var node in Settings.currentGraph.nodes) {
                 if (!node.windowRect.Contains(_mousePosition)) {
                     continue;
                 }
@@ -307,10 +307,10 @@ namespace Brix.State.Editor {
                 return;
             }
 
-            var fromNode = settings.currentGraph.GetNodeById(_transitionFromNodeId);
+            var fromNode = Settings.currentGraph.GetNodeById(_transitionFromNodeId);
             fromNode.transitionTargetNode = _selectedNode.id;
 
-            var toNode = settings.currentGraph.GetNodeById(fromNode.transitionInputNode);
+            var toNode = Settings.currentGraph.GetNodeById(fromNode.transitionInputNode);
             var transition = toNode.stateRef.currentState.GetTransition(fromNode.transRef.transitionId);
 
             transition.targetState = _selectedNode.stateRef.currentState;
@@ -323,7 +323,7 @@ namespace Brix.State.Editor {
         private void ShowAddNodeMenu(Event inputEvent) {
             var menu = new GenericMenu();
             menu.AddSeparator("");
-            if (settings.currentGraph == null) {
+            if (Settings.currentGraph == null) {
                 menu.AddDisabledItem(new GUIContent("Add State"));
                 menu.AddDisabledItem(new GUIContent("Add Comment"));
             } else {
@@ -387,35 +387,35 @@ namespace Brix.State.Editor {
             var action = (UserActions) input;
             switch (action) {
                 case UserActions.AddState:
-                    settings.AddNodeOnGraph(settings.stateNode, 200, 100, "State", _mousePosition);
+                    Settings.AddNodeOnGraph(Settings.stateNode, 200, 100, "State", _mousePosition);
                     break;
                 case UserActions.MakePortal:
-                    settings.AddNodeOnGraph(settings.portalNode, 100, 80, "Portal", _mousePosition);
+                    Settings.AddNodeOnGraph(Settings.portalNode, 100, 80, "Portal", _mousePosition);
                     break;
                 case UserActions.AddTransitionNode:
                     AddTransitionNode(_selectedNode, _mousePosition);
                     break;
                 case UserActions.CommentNode:
-                    settings.AddNodeOnGraph(settings.commentNode, 200, 100, "Comment", _mousePosition);
+                    Settings.AddNodeOnGraph(Settings.commentNode, 200, 100, "Comment", _mousePosition);
                     break;
                 case UserActions.DeleteNode:
                     if (_selectedNode.drawNode is TransitionNode) {
-                        var enterNode = settings.currentGraph.GetNodeById(_selectedNode.transitionInputNode);
+                        var enterNode = Settings.currentGraph.GetNodeById(_selectedNode.transitionInputNode);
                         enterNode?.stateRef.currentState.RemoveTransition(_selectedNode.transRef.transitionId);
                     }
 
-                    settings.currentGraph.MarkNodeForDeletion(_selectedNode.id);
+                    Settings.currentGraph.MarkNodeForDeletion(_selectedNode.id);
                     break;
                 case UserActions.MakeTransition:
                     _transitionFromNodeId = _selectedNode.id;
-                    settings.makeTransition = true;
+                    Settings.makeTransition = true;
                     break;
                 case UserActions.ResetPan:
                     ResetScroll();
                     break;
             }
 
-            forceSetDirty = true;
+            ForceSetDirty = true;
         }
 
         private static void AddTransitionNode(Node fromNode, Vector3 pos) {
@@ -424,7 +424,7 @@ namespace Brix.State.Editor {
         }
 
         public static void AddTransitionNodeFromTransition(Transition transition, Node fromNode, Vector3 pos) {
-            settings.AddNodeOnGraph(settings.transitionNode, 200, 100, "Condition", pos, fromNode.id, transition.id);
+            Settings.AddNodeOnGraph(Settings.transitionNode, 200, 100, "Condition", pos, fromNode.id, transition.id);
         }
 
         #endregion

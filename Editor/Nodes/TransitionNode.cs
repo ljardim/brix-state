@@ -7,13 +7,13 @@ namespace Brix.State.Editor {
         public override void DrawWindow(Node inputNode) {
             EditorGUILayout.LabelField("");
             var transitionInputNode =
-                BrixEditor.settings.currentGraph.GetNodeById(inputNode.transitionInputNode);
+                BrixEditor.Settings.currentGraph.GetNodeById(inputNode.transitionInputNode);
             if (transitionInputNode == null) {
                 return;
             }
 
             if (transitionInputNode.stateRef.currentState == null) {
-                BrixEditor.settings.currentGraph.MarkNodeForDeletion(inputNode.id);
+                BrixEditor.Settings.currentGraph.MarkNodeForDeletion(inputNode.id);
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace Brix.State.Editor {
                     GUILayout.Label(transition.condition.description);
 
                     var targetNode =
-                        BrixEditor.settings.currentGraph.GetNodeById(inputNode.transitionTargetNode);
+                        BrixEditor.Settings.currentGraph.GetNodeById(inputNode.transitionTargetNode);
                     if (targetNode == null) {
                         transition.targetState = null;
                     } else {
@@ -52,10 +52,10 @@ namespace Brix.State.Editor {
             }
 
             inputNode.transRef.previousCondition = transition.condition;
-            inputNode.isDuplicate = BrixEditor.settings.currentGraph.IsTransitionDuplicate(inputNode);
+            inputNode.isDuplicate = BrixEditor.Settings.currentGraph.IsTransitionDuplicate(inputNode);
 
             if (!inputNode.isDuplicate) {
-                BrixEditor.forceSetDirty = true;
+                BrixEditor.ForceSetDirty = true;
             }
         }
 
@@ -65,9 +65,9 @@ namespace Brix.State.Editor {
             inputNodeRect.width = 1;
             inputNodeRect.height = 1;
 
-            var fromNode = BrixEditor.settings.currentGraph.GetNodeById(inputNode.transitionInputNode);
+            var fromNode = BrixEditor.Settings.currentGraph.GetNodeById(inputNode.transitionInputNode);
             if (fromNode == null) {
-                BrixEditor.settings.currentGraph.MarkNodeForDeletion(inputNode.id);
+                BrixEditor.Settings.currentGraph.MarkNodeForDeletion(inputNode.id);
             } else {
                 var targetColor = Color.green;
                 if (!inputNode.isAssigned || inputNode.isDuplicate) {
@@ -83,7 +83,7 @@ namespace Brix.State.Editor {
             }
 
             if (inputNode.transitionTargetNode > 0) {
-                var targetNode = BrixEditor.settings.currentGraph.GetNodeById(inputNode.transitionTargetNode);
+                var targetNode = BrixEditor.Settings.currentGraph.GetNodeById(inputNode.transitionTargetNode);
                 if (targetNode == null) {
                     inputNode.transitionTargetNode = -1;
                 } else {

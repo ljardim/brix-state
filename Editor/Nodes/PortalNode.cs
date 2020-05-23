@@ -14,7 +14,7 @@ namespace Brix.State.Editor {
             }
 
             inputNode.stateRef.previousState = inputNode.stateRef.currentState;
-            BrixEditor.forceSetDirty = true;
+            BrixEditor.ForceSetDirty = true;
         }
 
         public override void DrawCurve(Node inputNode) { }

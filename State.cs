@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using SOA.Common;
+using UnityAtoms;
 using UnityEngine;
 
 namespace Brix.State {
     [CreateAssetMenu(menuName = Constants.Menus.STATE + "New State")]
     public class State : ScriptableObject {
         public int idCount;
-        public Action[] onEnter;
-        public Action[] onExit;
-        public Action[] onFixed;
-        public Action[] onUpdate;
+        public AtomAction[] onEnter;
+        public AtomAction[] onExit;
+        public AtomAction[] onFixed;
+        public AtomAction[] onUpdate;
         [SerializeField]public List<Transition> transitions = new List<Transition>();
 
         public void FixedTick(StateManager stateManager) {
@@ -51,10 +51,10 @@ namespace Brix.State {
             }
         }
 
-        private static void ExecuteActions(IEnumerable<Action> actions) {
+        private static void ExecuteActions(IEnumerable<AtomAction> actions) {
             foreach (var action in actions) {
                 if (action != null) {
-                    action.Execute();
+                    action.Do();
                 }
             }
         }

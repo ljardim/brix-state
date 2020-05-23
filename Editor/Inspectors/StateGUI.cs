@@ -93,7 +93,7 @@ namespace Brix.State.Editor {
             list.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, targetName); };
 
             list.drawElementCallback = (rect, index, isActive, isFocused) => {
-                SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
+                var element = list.serializedProperty.GetArrayElementAtIndex(index);
                 EditorGUI.ObjectField(new Rect(rect.x, rect.y, rect.width * .3f, EditorGUIUtility.singleLineHeight),
                                       element.FindPropertyRelative("condition"), GUIContent.none);
                 EditorGUI.ObjectField(
