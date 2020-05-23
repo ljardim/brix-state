@@ -2,16 +2,12 @@
 
 The attached notices are provided for information only.
 
-1. ScriptableObject-Architecture (https://github.com/DanielEverland/ScriptableObject-Architecture)
+1. Unity Atoms (https://github.com/DanielEverland/ScriptableObject-Architecture)
 
-https://github.com/DanielEverland/ScriptableObject-Architecture/blob/master/LICENSE
+https://github.com/AdamRamberg/unity-atoms/blob/master/LICENSE.md
 
-2. SOA Common (https://github.com/ljardim/brix-scriptableobject-architecture-common)
-
-https://github.com/ljardim/brix-scriptableobject-architecture-common/blob/master/LICENCE
-
-3. Behaviour-Editor (https://github.com/sharpaccent/Behavior-Editor)
+2. Behaviour-Editor (https://github.com/sharpaccent/Behavior-Editor)
 
 Licence: CC-BY-4.0
 https://creativecommons.org/licenses/by/4.0/
-Changes Made: StateAction is replaced by a ScriptableObject Action which takes no Inputs so as to make it more extendable
+Changes Made: StateAction is replaced by Unity Atoms base AtomAction which takes no Inputs so as to make it more extendable and make integrating into Unity Atoms easier
