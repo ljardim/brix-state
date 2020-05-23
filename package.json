@@ -2,7 +2,7 @@
     "name": "com.brix.state",
     "displayName": "Brix State",
     "description": "Simple state pattern implementation based on work done by Athos Kele (www.sharpaccent.com) and built on top of Unity Atoms",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "unity": "2019.3",
     "dependencies": {
         "com.mambojambostudios.unity-atoms": "https://github.com/AdamRamberg/unity-atoms.git#master"
