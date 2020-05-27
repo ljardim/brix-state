@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Brix.State {
-    public abstract class StateManager : MonoBehaviour {
+    public class StateManager : MonoBehaviour {
         public State currentState;
         [HideInInspector]public float delta;
 
@@ -9,6 +9,7 @@ namespace Brix.State {
             if (currentState != null) {
                 currentState.OnEnter();
             }
+
             Init();
         }
 
@@ -17,6 +18,7 @@ namespace Brix.State {
             if (currentState != null) {
                 currentState.Tick(this);
             }
+
             Tick();
         }
 
@@ -25,11 +27,14 @@ namespace Brix.State {
             if (currentState != null) {
                 currentState.FixedTick(this);
             }
+
             FixedTick();
         }
 
-        protected abstract void Init();
-        protected abstract void Tick();
-        protected abstract void FixedTick();
+        protected virtual void Init() { }
+
+        protected virtual void Tick() { }
+
+        protected virtual void FixedTick() { }
     }
 }
